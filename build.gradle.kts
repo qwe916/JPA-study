@@ -5,6 +5,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.3"
 	kotlin("jvm") version "1.8.22"
 	kotlin("plugin.spring") version "1.8.22"
+	kotlin("plugin.jpa") version "1.7.0"
 }
 
 group = "com.example"
@@ -20,7 +21,10 @@ repositories {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
+	implementation("mysql:mysql-connector-java:8.0.30")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.1")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("com.github.f4b6a3:ulid-creator:5.1.0")// ULID Creator
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
@@ -33,4 +37,11 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+// entity에 final 키워드가 들어가게 하지 않기 위해 설정
+allOpen {
+	annotation("javax.persistence.Entity")
+	annotation("javax.persistence.MappedSuperclass")
+	annotation("javax.persistence.Embeddable")
 }
